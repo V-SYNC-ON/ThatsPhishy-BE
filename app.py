@@ -4,7 +4,7 @@ from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS
 
 from utils.ModelUtils import get_prediction
-from utils.URLUtils import get_description, get_domain, get_status
+from utils.URLUtils import get_description, get_domain, get_status, reformat_url, url_exists
 
 app = Flask(__name__)
 CORS(app)
@@ -14,6 +14,10 @@ def predict():
     try:
         data = request.get_json()
         url = data.get('url')
+        url=reformat_url(url)
+        if(url_exists(url)==False) :
+            return make_response(jsonify({"error": "The URL doesn't exist "}), 400)
+
         output=get_prediction(url)
         domain_name=get_domain(url)
         status=get_status(output)
