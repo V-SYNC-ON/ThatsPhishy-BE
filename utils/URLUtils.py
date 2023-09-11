@@ -1,3 +1,4 @@
+from ping3 import ping
 from urllib.parse import urlparse
 from URLFeatureExtractor import URLFeatureExtractor
 
@@ -27,5 +28,19 @@ def get_description(output, url):
         return average
     else:
         return safe
+
+def reformat_url(url):
+    if not url.startswith('https://') and not url.startswith('http://'):
+        url = 'https://' + url
+    return url
+    
+def url_exists(url):
+    try:
+        host = url.split('//')[1].split('/')[0] 
+        result = ping(host, timeout=1) 
+        return result 
+    except Exception as e:
+        return False
+
 
 
