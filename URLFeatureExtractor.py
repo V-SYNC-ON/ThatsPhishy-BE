@@ -172,7 +172,7 @@ class URLFeatureExtractor:
 
     def get_suspecious_tld(self):
         return 1 if self.parsed_url.hostname.endswith((".xyz", ".top", ".pw")) else 0
-
+    
     def get_all_features(self):
         feature_order = [
             "length_url", "length_hostname", "ip", "nb_dots", "nb_hyphens", "nb_at", "nb_qm", "nb_and",
