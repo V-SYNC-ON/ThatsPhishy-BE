@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS
 
 from utils.ModelUtils import get_prediction
@@ -24,9 +24,9 @@ def predict():
             'status':status,
             'description':description
         }
-        return jsonify(response)
+        return make_response(jsonify(response),200)
     except Exception as e:
-        return jsonify({'error': str(e)})
+        return make_response(jsonify({'Error': 'Something Went Wrong'}), 500)
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 8080))
