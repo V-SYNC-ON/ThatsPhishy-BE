@@ -1,6 +1,6 @@
-from ping3 import ping
 from urllib.parse import urlparse
 from URLFeatureExtractor import URLFeatureExtractor
+import requests
 
 def get_features(url):
     extractor = URLFeatureExtractor(url)
@@ -36,11 +36,10 @@ def reformat_url(url):
     
 def url_exists(url):
     try:
-        host = url.split('//')[1].split('/')[0] 
-        result = ping(host, timeout=1) 
-        return result 
-    except Exception as e:
+        response = requests.get(url, timeout=5)
+        if response.status_code == 200:
+            return True
+        else:
+            return False
+    except requests.exceptions.RequestException:
         return False
-
-
-
