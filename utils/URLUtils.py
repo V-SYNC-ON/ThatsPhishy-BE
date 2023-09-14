@@ -37,9 +37,12 @@ def reformat_url(url):
 def url_exists(url):
     try:
         host = url.split('//')[1].split('/')[0] 
-        result = ping(host, timeout=1) 
-        return result 
+        result = ping(host, timeout=1)
+        if result is None:
+            return False
+        return result!=False 
     except Exception as e:
+        print("ERROR: ",e)
         return False
 
 

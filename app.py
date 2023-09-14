@@ -30,6 +30,7 @@ def predict():
         }
         return make_response(jsonify(response),200)
     except Exception as e:
+        print("ERROR: ",e)
         return make_response(jsonify({'Error': 'Something Went Wrong'}), 500)
 
 if __name__ == '__main__':
