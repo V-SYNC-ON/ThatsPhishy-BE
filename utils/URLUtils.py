@@ -1,5 +1,6 @@
 from urllib.parse import urlparse
 from URLFeatureExtractor import URLFeatureExtractor
+from pymongo.errors import ConnectionFailure
 import requests
 
 def get_features(url):
@@ -42,4 +43,11 @@ def url_exists(url):
         else:
             return False
     except requests.exceptions.RequestException:
+        return False
+
+def is_mongodb_alive(client):
+    try:
+        client.admin.command('ping')
+        return True
+    except ConnectionFailure:
         return False
