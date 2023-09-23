@@ -1,7 +1,9 @@
+import math
 from urllib.parse import urlparse
 from URLFeatureExtractor import URLFeatureExtractor
 from pymongo.errors import ConnectionFailure
 import requests
+import os
 
 def get_features(url):
     extractor = URLFeatureExtractor(url)
@@ -43,8 +45,10 @@ def url_exists(url):
         if response.status_code != 404:
             return True
         else:
+            print(response)
             return False
-    except requests.exceptions.RequestException:
+    except requests.exceptions.RequestException as e:
+        print(e)
         return False
 
 def is_mongodb_alive(client):
@@ -53,3 +57,27 @@ def is_mongodb_alive(client):
         return True
     except ConnectionFailure:
         return False
+    
+set_url=set()
+def load_urls_into_set():
+    relative='utils\hosts.txt'
+    absolute_path = os.path.abspath(relative)
+    try:
+        with open(absolute_path, 'r') as file:
+            return {line.strip() for line in file}
+    except FileNotFoundError:
+        print("File not found: hosts.txt ")
+        return set()
+
+def present_in_hosts(url):
+    global set_url 
+    if not set_url:
+        set_url = load_urls_into_set()
+    return url in set_url
+
+def normalize(val):
+    if val <= 50:
+        normalized_val = 20 + ((val - 1) / 49) * 30
+    else:
+        normalized_val = val
+    return round(normalized_val)
