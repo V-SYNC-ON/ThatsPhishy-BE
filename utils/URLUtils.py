@@ -37,8 +37,10 @@ def reformat_url(url):
     
 def url_exists(url):
     try:
-        response = requests.get(url, timeout=5)
-        if response.status_code == 200:
+        domain = urlparse(url).netloc
+        parsed_url = 'https://' + domain
+        response = requests.get(parsed_url, timeout=5)
+        if response.status_code != 404:
             return True
         else:
             return False
