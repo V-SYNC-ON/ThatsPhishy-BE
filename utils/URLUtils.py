@@ -60,13 +60,13 @@ def is_mongodb_alive(client):
     
 set_url=set()
 def load_urls_into_set():
-    relative='utils\hosts.txt'
+    relative='utils/hosts.txt'
     absolute_path = os.path.abspath(relative)
     try:
         with open(absolute_path, 'r') as file:
             return {line.strip() for line in file}
-    except FileNotFoundError:
-        print("File not found: hosts.txt ")
+    except FileNotFoundError as e:
+        print("File not found: hosts.txt ", e)
         return set()
 
 def present_in_hosts(url):
